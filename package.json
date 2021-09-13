@@ -1,0 +1,15 @@
+{
+  "name": "vibe-bot",
+  "version": "1.0.0",
+  "description": "provides the vibes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Frunnkis",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^13.1.0",
+    "node": "^16.6.1"
+  }
+}
