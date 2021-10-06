@@ -13,6 +13,9 @@ const cooldowns = new Discord.Collection();
 const refreshList = require("./utility/refreshList");
 const { Console } = require('console');
 
+//Manager
+const manager = require("./utility/safeOperations");
+
 //Gang War Exports
 module.exports.FOR_ROLE = '719075302730498142';
 module.exports.AGAINST_ROLE = '719075105074053181';
@@ -66,16 +69,16 @@ client.on('messageCreate', message => {
     //if STILL not a command, abort
     if (!command) { return;}
     if (command.ownerOnly && (message.author.id != message.guild.ownerId)){
-        return message.reply('This command can only be run by the server owner!');
+        manager.CheckedSend(message, 'This command can only be run by the server owner!');
     }
     if (command.guildOnly && message.channel.type !== 'GUILD_TEXT') {
-        return message.reply('That\'s a server only command');
+        manager.CheckedSend(message, 'That\'s a server only command');
     }
     if (command.creatorOnly && !(message.author.id == '300225363001344000' || message.author.id == '439942599516618792') ) {
-        return message.reply("That commands only for the bot's creator, sorry!");
+        manager.CheckedSend(message, "That commands only for the bot's creator, sorry!");
     }
     if (command.emoteOnly && !( message.guild.members.cache.get(message.author.id).permissions.has(Permissions.FLAGS.MANAGE_EMOJIS_AND_STICKERS) )) {
-        return message.reply("This command can only be run by those allowed to manage emotes");
+        manager.CheckedSend(message, "This command can only be run by those allowed to manage emotes");
     }
     
     if (command.args && !args.length) {
@@ -85,7 +88,7 @@ client.on('messageCreate', message => {
             reply += `\n usage: \`${prefix}${commandName} ${command.usage}\``;
         }
 
-        return message.channel.send(reply);
+        return manager.CheckedSend(message, reply);
     }
 
     if (!cooldowns.has(command.name)) {
@@ -101,7 +104,7 @@ client.on('messageCreate', message => {
         
         if (now < expirationTime) {
             const timeLeft = (expirationTime - now) / 1000;
-            return message.reply(`Please wait ${timeLeft.toFixed(1)} more second(s) before using \`${command.name}\` command.`);
+            manager.CheckedSend(message, `Please wait ${timeLeft.toFixed(1)} more second(s) before using \`${command.name}\` command.`);
         }
     }
 
