@@ -5,25 +5,19 @@ module.exports = {
     //aliases: [''],
     //cooldown: 5,
 	execute(message, args) {
-
-        setTimeout(() => {message.delete();}, 5);
-        
+        const manager = require("../utility/safeOperations");
         setTimeout(() => {
-        if (args == 'uwu')
-        {
-            return message.author.send('I\'ve deleted your message to save you the embarassment but I must ask that you please refrain from misusing me, you filthy degenerate.');
-        }
-            
-            var topic;
+            var topic = new String();
             args.forEach(string => {
                 if (!topic)
                 topic = string + ' ';
                 else 
                 topic += string + ' ';
             });
-            message.channel.send(`${topic.trim()}`);
-
+            manager.checkedSend(message, `${topic.trim()}`);
         }, 15);
+
+        manager.checkedDelete(message);
         
     }
 

@@ -6,6 +6,7 @@ module.exports = {
     //args: true,
     cooldown: 0.5,
 	execute(message, args) {
+        const manager = require("../utility/safeOperations");
         
         var fs = require('fs');
 
@@ -31,19 +32,12 @@ module.exports = {
                     count++;
                 });
 
-                message.channel.send("Here are the available categories: ```" + holdOutput + "```");
+                manager.checkedSend(message, "Here are the available categories: ```" + holdOutput + "```");
             });
         }
         catch (error) {
             console.log(error);
-            message.channel.send("Something went wrong reading the file.");
+            manager.checkedSend(message, "Something went wrong reading the file.");
         }
-
-        setTimeout(() => {
-            try {message.delete();}
-            catch (e) {
-                console.log(e);
-            }
-        }, 200);
 	}
 };

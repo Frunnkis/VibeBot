@@ -6,12 +6,13 @@ module.exports = {
     cooldown: 0.5,
     args: true,
 	execute(message, args) {
+        const manager = require("../utility/safeOperations")
         console.log();
 
         var fs = require('fs');
 
         if (args == undefined) {
-            message.channel.send("Don't add empty lines!");
+            manager.checkedSend(message, "Don't add empty lines!");
             throw new Error("Prevented empty lines.");
         }
 
@@ -25,10 +26,7 @@ module.exports = {
             });
         }
         catch (error) {
-            message.channel.send("Something went wrong when opening the file");
+            manager.checkedSend(message, "Something went wrong when opening the file");
         }
-
-        try { setTimeout(() => {message.delete();}, 200);}
-        catch (error) {};
 	}
 };

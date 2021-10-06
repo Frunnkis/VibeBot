@@ -1,6 +1,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const { Client, Intents, Permissions } = require('discord.js');
+const { Client, Intents, Permissions} = require('discord.js');
 const { prefix, token } = require('./config.json');
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.DIRECT_MESSAGES ]});
@@ -68,7 +68,7 @@ client.on('messageCreate', message => {
     if (command.ownerOnly && (message.author.id != message.guild.ownerId)){
         return message.reply('This command can only be run by the server owner!');
     }
-    if (command.guildOnly && message.channel.type !== 'text') {
+    if (command.guildOnly && message.channel.type !== 'GUILD_TEXT') {
         return message.reply('That\'s a server only command');
     }
     if (command.creatorOnly && !(message.author.id == '300225363001344000' || message.author.id == '439942599516618792') ) {

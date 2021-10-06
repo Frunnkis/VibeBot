@@ -6,7 +6,8 @@ module.exports = {
     args: true,
     cooldown: 0.5,
 	execute(message, args) {
-        
+        const manager = require("../utility/safeOperations");
+
         var fs = require('fs');
 
         try {
@@ -19,15 +20,13 @@ module.exports = {
                     while (randomAnswer == "") {
                         randomAnswer = answers[Math.floor(Math.random() * answers.length)];
                     }
-                    message.channel.send(randomAnswer);
+                    manager.checkedSend(message, randomAnswer);
                 }
-                catch (error) {
-                    message.channel.send("Something went wrong when reading the file.");
-                }
+                catch (error) {}
             });
         }
         catch (error) {
-            message.channel.send("Not a valid category!");
+            manager.checkedSend(message, "Not a valid category!");
         }
 	}
 };

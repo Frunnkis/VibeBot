@@ -5,35 +5,29 @@ module.exports = {
     aliases: ['gr'],
     //cooldown: 5,
 	execute(message, args) {
+        const manager = require("../utility/safeOperations");
+
         if (!args.length)
         {
-            message.channel.send('Grrr.');
+            manager.checkedSend(message, 'Grrr.');
         }
         else if (args == ';')
         {
-            message.channel.send('Shutting down the arena');
+            manager.checkedSend(message, 'Shutting down the arena');
             console.log(message.channel.id);
         }
         else if (args == 'yam')
         {
-            message.channel.send(args);
-            message.channel.send('\nPRIEST');
+            manager.checkedSend(message, args);
+            manager.checkedSend(message, '\nPRIEST');
         }
         else if (args == 'water')
         {
-            message.channel.send(`${message.author.username} reminds you to \ndrink some water\n***RIGHT NOW***`);
-        }
-        else if (args == 'uwu')
-        {
-            message.channel.send('stop');
-        }
-        else if (args == 'gf')
-        {
-            message.channel.send(`Welcome to my harem, ${message.author.username}`);
+            manager.checkedSend(message, `${message.author.username} reminds you to \ndrink some water\n***RIGHT NOW***`);
         }
         else if (args == 'just')
         {
-            message.channel.send('Our cause is just.')
+            manager.checkedSend(message, 'Our cause is just.')
         }
         else 
         {
@@ -44,14 +38,9 @@ module.exports = {
                 else 
                 topic += string + ' ';
             });
-            
-            
      
-            message.channel.send(`${message.author.username} said: "${topic.trim()}"`);
-            message.channel.send('\nThanks for sharing.');
+            manager.checkedSend(message, `${message.author.username} said: "${topic.trim()}"`);
+            manager.checkedSend(message, '\nThanks for sharing.');
         }
-    
-
-        setTimeout(() => {message.delete();}, 200);
 	}
 };

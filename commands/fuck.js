@@ -5,9 +5,11 @@ module.exports = {
     //aliases: ['gr'],
     //cooldown: 5,
 	execute(message, args) {
+        const manager = require("../utility/safeOperations");
+
         if (!args.length)
         {
-            message.channel.send('Fuck.');
+            manager.checkedSend(message,'Fuck.');
         }
         else 
         {
@@ -21,11 +23,8 @@ module.exports = {
             
             
      
-            message.channel.send(`Fuck ${topic.trim()}`);
-            message.channel.send(`\nAll my homies hate ${topic.trim()}.`);
+            manager.checkedSend(message,`Fuck ${topic.trim()}`);
+            manager.checkedSend(message,`\nAll my homies hate ${topic.trim()}.`);
         }
-    
-
-        setTimeout(() => {message.delete();}, 200);
 	}
 };

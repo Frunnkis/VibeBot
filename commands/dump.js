@@ -7,7 +7,8 @@ module.exports = {
     args: true,
     cooldown: 0.5,
 	execute(message, args) {
-        
+        const manager = require("../utility/safeOperations");
+
         var fs = require('fs');
 
         try {
@@ -15,20 +16,32 @@ module.exports = {
 
                 try {
                     var answers = contents.split("\n");
-                        
+                    
+                    var data = [];
+
                     answers.forEach(element => {
-                        if (element != "")
-                            message.channel.send(element);
-                            
+                        //add each element to data array
+                        if (element != "") {
+                            data.push(element);
+                        }
+
+                        //once array reaches 5 elements, send joined array and empty array
+                        if (data.length >= 5) {
+                            manager.checkedSend(message, data.join("\n"));
+                            data = [];
+                        }
                     });
+
+                    if (data != [])
+                        manager.checkedSend(message, data.join("\n"));
                 }
                 catch (error) {
-                    message.channel.send("Something went wrong when reading the file.");
+                    manager.checkedSend(message, "Something went wrong when reading the file.");
                 }
             });
         }
         catch (error) {
-            message.channel.send("Not a valid category!");
+            manager.checkedSend(message, "Not a valid category!");
         }
 	}
 };

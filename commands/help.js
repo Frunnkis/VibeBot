@@ -1,3 +1,4 @@
+const { Console } = require('console');
 const { prefix } = require('../config.json');
 module.exports = {
     name: 'help',
@@ -6,23 +7,17 @@ module.exports = {
     usage: '`[command name]`',
     cooldown: 3,
     execute(message, args) {
+        const manager = require("../utility/safeOperations");
         const data = [];
         const { commands } = message.client;
 
         if (!args.length) {
-            data.push('Here\'s a list of all commands:');
+            data.push('Here\'s a list of all commands:```');
             data.push(commands.map(command => command.name).join('\n'));
-            data.push(`\nYou can send \`${prefix}help [command name]\` to get info on a specific command!`);
+            data.push(`\`\`\`You can send \`${prefix}help [command name]\` to get info on a specific command!`);
         
-            return message.author.send(data, { split: true})
-            .then(() => {
-                if (message.channel.type === 'dm') return;
-                message.reply('I\'ve sent you a DM with the commands!');
-            })
-            .catch(error => {
-                console.error(`Could not send help DM to ${message.author.tag}. \n`, error);
-                message.reply('It seems like I can\'t DM you. Do you have DMs disabled?');
-            });
+            //message.author.send("test");
+            return manager.checkedSend(message, data.join('\n'))
         }
         const name = args[0].toLowerCase();
         const command = commands.get(name) || commands.find(c => c.aliases && c.aliases.includes(name));
@@ -38,8 +33,7 @@ module.exports = {
         if (command.usage) data.push(`**Usage:** ${prefix}${command.name} ${command.usage}`);
 
         data.push(`**Cooldown:** ${command.cooldown || 3} second(s)`);
-
-        message.channel.send(data, {split: true});
+        manager.checkedSend(message, data.join('\n'));
 
     }
 }

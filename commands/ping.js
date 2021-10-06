@@ -3,6 +3,9 @@ module.exports = {
     description: 'Ping!',
     cooldown: 5,
 	execute(message, args) {
-		message.channel.send('Pong.');
+		const manager = require("../utility/safeOperations")
+		const { reactOK } = require('../config.json');
+		manager.checkedSend(message,'Pong.');
+		manager.checkedReact(message, reactOK);
 	}
 };

@@ -6,6 +6,8 @@ module.exports = {
     cooldown: 0.5,
     args: true,
 	execute(message, args) {
+        const manager = require("../utility/safeOperations");
+        const { reactOK } = require('../config.json');
 
         //add new gif
         var fileName;
@@ -18,7 +20,7 @@ module.exports = {
         var fs = require('fs');
 
         if (toAppend == undefined) {
-            message.channel.send("Don't add empty lines!");
+            manager.checkedSend(message, "Don't add empty lines!");
             throw new Error("Prevented empty lines.");
         }
 
@@ -26,18 +28,15 @@ module.exports = {
             fs.appendFile('gifs/' + fileName + '.txt', toAppend +  "\n", function (err) {
                 if (err) throw err;
                 console.log('Saved!');
+                manager.checkedReact(message, reactOK);
             });
         }
         catch (error) {
-            message.channel.send("Something went wrong when opening the file");
+            manager.checkedSend(message, "Something went wrong when opening the file");
         }
 
         //creating list
         const refreshList = require("../utility/refreshList");
         refreshList.refresh();
-
-        //delete message
-        try { setTimeout(() => {message.delete();}, 200);}
-        catch (error) {};
 	}
 };

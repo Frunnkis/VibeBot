@@ -5,11 +5,8 @@ module.exports = {
     cooldown: 1.5,
     args: true,
     execute(message, args) {
-        
-        console.log("ARGS:\n" + args);
 
         let emotes = args.filter(value => /<a?:.+:\d+>/.test(value));
-        console.log("EXTRACTED:" + emotes);
         
         //fuse message, then split on user-input commas
         let options = args.join(' ');
