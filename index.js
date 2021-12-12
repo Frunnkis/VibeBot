@@ -69,16 +69,16 @@ client.on('messageCreate', message => {
     //if STILL not a command, abort
     if (!command) { return;}
     if (command.ownerOnly && (message.author.id != message.guild.ownerId)){
-        manager.CheckedSend(message, 'This command can only be run by the server owner!');
+        return manager.checkedSend(message, 'This command can only be run by the server owner!');
     }
     if (command.guildOnly && message.channel.type !== 'GUILD_TEXT') {
-        manager.CheckedSend(message, 'That\'s a server only command');
+        return manager.checkedSend(message, 'That\'s a server only command');
     }
     if (command.creatorOnly && !(message.author.id == '300225363001344000' || message.author.id == '439942599516618792') ) {
-        manager.CheckedSend(message, "That commands only for the bot's creator, sorry!");
+        return manager.checkedSend(message, "That commands only for the bot's creator, sorry!");
     }
     if (command.emoteOnly && !( message.guild.members.cache.get(message.author.id).permissions.has(Permissions.FLAGS.MANAGE_EMOJIS_AND_STICKERS) )) {
-        manager.CheckedSend(message, "This command can only be run by those allowed to manage emotes");
+        return manager.checkedSend(message, "This command can only be run by those allowed to manage emotes");
     }
     
     if (command.args && !args.length) {
@@ -88,7 +88,7 @@ client.on('messageCreate', message => {
             reply += `\n usage: \`${prefix}${commandName} ${command.usage}\``;
         }
 
-        return manager.CheckedSend(message, reply);
+        return manager.checkedSend(message, reply);
     }
 
     if (!cooldowns.has(command.name)) {
@@ -102,10 +102,7 @@ client.on('messageCreate', message => {
     if (timestamps.has(message.author.id)) {
         const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
         
-        if (now < expirationTime) {
-            const timeLeft = (expirationTime - now) / 1000;
-            manager.CheckedSend(message, `Please wait ${timeLeft.toFixed(1)} more second(s) before using \`${command.name}\` command.`);
-        }
+        if (now < expirationTime) {}
     }
 
     timestamps.set(message.author.id, now);
